@@ -1,11 +1,19 @@
-import { createBlog, deleteBlog, updateBlog } from "../../controller/blog.controller";
+import { createBlog, deleteBlog, updateBlog, uploadContentImage } from "../../controller/blog.controller";
 import { Router } from "express";
 import upload from "../../middleware/upload";
 
 const blogRouter = Router();
 
+//Create Blog
 blogRouter.post("/create-blog", upload.single("banner"), createBlog);
+
+//Update Blog
 blogRouter.patch("/update-blog/:id", upload.single("banner"), updateBlog);
+
+//Delete Blog
 blogRouter.delete("/remove-blog/:id", upload.single("banner"), deleteBlog);
+
+//To upload images from the content
+blogRouter.post("/editor-image", upload.single("image"), uploadContentImage);
 
 export default blogRouter;

@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import blogModel from "../model/blog.model";
 import slugify from "../utils/slugify";
-import { title } from "process";
 
 
 // Create Blog, Body: banner, title, des, content, tags, draft
@@ -82,7 +81,7 @@ export const updateBlog = async (req: Request, res: Response) => {
             return
         }
 
-        const existingBlog = await blogModel.findOne({ blog_id:id });
+        const existingBlog = await blogModel.findOne({ blog_id: id });
 
         if (!existingBlog) {
             res.status(404).json({ message: "Blog not found" });
@@ -123,6 +122,30 @@ export const updateBlog = async (req: Request, res: Response) => {
         await existingBlog.save();
 
         res.status(201).json({ message: "Blog updated successfully", blog: existingBlog });
+    }
+    catch (error: any) {
+        console.error("Error creating blog:", error);
+        res.status(500).json({ message: "Failed to update blog", error: error.message });
+    }
+}
+
+
+//Upload content image
+export const uploadContentImage = async (req: Request, res: Response) => {
+    try {
+        const imageUrl = (req.file as any)?.location;
+
+        if (!imageUrl) {
+            res.status(400).json({ success: 0, message: 'Image upload failed' });
+            return
+        }
+
+        res.json({
+            success: 1,
+            file: {
+                url: imageUrl,
+            },
+        });
     }
     catch (error: any) {
         console.error("Error creating blog:", error);
