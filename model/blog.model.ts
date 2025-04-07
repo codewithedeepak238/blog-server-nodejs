@@ -1,31 +1,28 @@
 import mongoose, { Schema, Document } from "mongoose";
 
-// 1. Define rich content block types
-export type ContentBlock =
-  | { type: "paragraph"; text: string }
-  | { type: "heading"; level: number; text: string }
-  | { type: "image"; url: string; alt?: string }
-  | { type: "code"; language: string; code: string }
-  | { type: "list"; ordered: boolean; items: string[] };
+// Editor.js block format
+export interface EditorJsBlock {
+  type: string;
+  data: Record<string, any>;
+}
 
-// 2. Define main Blog interface
 export interface IBlog extends Document {
   blog_id: string;
   title: string;
   banner?: string;
   des?: string;
-  content?: ContentBlock[];
+  content?: EditorJsBlock[];
   tags?: string[];
   draft?: boolean;
   publishedAt?: Date;
 }
 
-// 3. Define Mongoose schema (with generic for flexibility)
-const contentBlockSchema = new Schema<ContentBlock>(
+const contentBlockSchema = new Schema(
   {
     type: { type: String, required: true },
+    data: { type: Schema.Types.Mixed, required: true },
   },
-  { _id: false, strict: false } // allows flexible shape per content type
+  { _id: false }
 );
 
 const blogSchema: Schema = new Schema<IBlog>(
@@ -34,7 +31,7 @@ const blogSchema: Schema = new Schema<IBlog>(
     title: { type: String, required: true },
     banner: { type: String },
     des: { type: String, maxlength: 200 },
-    content: [contentBlockSchema], // array of content blocks
+    content: [contentBlockSchema],
     tags: [String],
     draft: { type: Boolean, default: false },
   },

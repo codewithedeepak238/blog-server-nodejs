@@ -23,7 +23,7 @@ blogRouter.get("/blogs", getAllBlogs);
 blogRouter.get("/blog/:id", getSingleBlog);
 
 //Get Draft Blogs
-blogRouter.get("/blog/:id", getDraftBlogs);
+blogRouter.get("/blogs/draft", getDraftBlogs);
 
 
 export default blogRouter;

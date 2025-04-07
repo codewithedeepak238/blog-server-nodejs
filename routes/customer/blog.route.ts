@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAllBlogs, getSingleBlog } from "../../controller/blog.controller";
+import { getAllBlogs, getSingleBlog, getDraftBlogs } from "../../controller/blog.controller";
 
 const customerBlogRouter = Router();
 
