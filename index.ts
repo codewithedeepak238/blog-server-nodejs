@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import connectToMongoDB from "./config/connection";
 import blogRouter from "./routes/admin/blog.route";
+import customerBlogRouter from "./routes/customer/blog.route";
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.all("/", (req, res, next) => {
 });
 
 app.use('/api/v1/admin', blogRouter);
+app.use('/api/v1/customer', customerBlogRouter);
 
 const PORT = process.env.PORT || 3500;
 

@@ -45,4 +45,10 @@ const blogSchema: Schema = new Schema<IBlog>(
   }
 );
 
+blogSchema.index({
+  title: "text",
+  des: "text",
+  tags: "text",
+});
+
 export default mongoose.model<IBlog>("blogs", blogSchema);

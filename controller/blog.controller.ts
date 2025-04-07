@@ -152,3 +152,68 @@ export const uploadContentImage = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Failed to update blog", error: error.message });
     }
 }
+
+//Get All Blogs .. 10 Blogs per page, need to pass query --> /blogs?page=1
+export const getAllBlogs = async (req: Request, res: Response) => {
+    try {
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = 10;
+        const skip = (page - 1) * limit;
+        const search = (req.query.search as string)?.trim();
+
+        const query: any = {};
+        let sort: any = { publishedAt: -1 };
+
+        if (search) {
+            query.$text = { $search: search };
+            sort = { score: { $meta: "textScore" } };
+        }
+
+        const allBlogs = await blogModel.find(query, search ? { score: { $meta: "textScore" } } : {}).sort(sort).skip(skip).limit(limit);
+
+        if (!allBlogs) {
+            res.status(400).json({ message: 'Failed to fetch the blogs.' });
+            return
+        }
+
+        res.status(200).json({
+            message: "Successfully fetched all blogs.",
+            page,
+            totalBlogs: allBlogs.length,
+            Blogs: allBlogs
+        })
+
+    }
+    catch (error: any) {
+        console.error("Error creating blog:", error);
+        res.status(500).json({ message: "Failed to update blog", error: error.message });
+    }
+}
+
+//Get single Blog
+export const getSingleBlog = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params
+        if (!id) {
+            res.status(400).json({ message: 'Blog Id is required' });
+            return
+        }
+
+        const blog = await blogModel.findOne({ blog_id: id });
+        if (!blog) {
+            res.status(400).json({ message: 'No blog exist with this Id.' });
+            return
+        }
+
+        res.status(200).json({
+            message: "Successfully fetched the blog.",
+            BlogDetails: blog
+        })
+
+    }
+    catch (error: any) {
+        console.error("Error creating blog:", error);
+        res.status(500).json({ message: "Failed to update blog", error: error.message });
+    }
+}
+
