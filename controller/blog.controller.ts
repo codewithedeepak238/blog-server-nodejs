@@ -16,7 +16,8 @@ export const createBlog = async (req: Request, res: Response) => {
             return
         }
 
-        const parsedContent = typeof content === "string" ? JSON.parse(content) : content;
+        const parsedContent = typeof req.body.content === "string"? JSON.parse(content): content;
+
         const blog_id = `${slugify(title)}-${Math.random().toString(36).substring(2, 6)}`;
 
         const existing = await blogModel.findOne({ blog_id, draft: false });

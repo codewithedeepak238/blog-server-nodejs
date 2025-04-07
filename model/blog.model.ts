@@ -1,47 +1,67 @@
 import mongoose, { Schema, Document } from "mongoose";
 
-// Editor.js block format
-export interface EditorJsBlock {
-  type: string;
-  data: Record<string, any>;
+/**
+ * Editor.js Content Interface
+ */
+export interface EditorJsContent {
+  time: number;
+  version: string;
+  blocks: {
+    id?: string;
+    type: string;
+    data: Record<string, any>;
+  }[];
 }
 
+/**
+ * Blog Document Interface
+ */
 export interface IBlog extends Document {
   blog_id: string;
   title: string;
   banner?: string;
   des?: string;
-  content?: EditorJsBlock[];
+  content: EditorJsContent;
   tags?: string[];
   draft?: boolean;
   publishedAt?: Date;
 }
 
-const contentBlockSchema = new Schema(
-  {
-    type: { type: String, required: true },
-    data: { type: Schema.Types.Mixed, required: true },
-  },
-  { _id: false }
-);
-
-const blogSchema: Schema = new Schema<IBlog>(
+/**
+ * Blog Schema
+ */
+const blogSchema: Schema<IBlog> = new Schema(
   {
     blog_id: { type: String, required: true, unique: true },
     title: { type: String, required: true },
     banner: { type: String },
     des: { type: String, maxlength: 200 },
-    content: [contentBlockSchema],
-    tags: [String],
-    draft: { type: Boolean, default: false },
+    
+    // Accept full Editor.js object as-is
+    content: {
+      type: Schema.Types.Mixed,
+      required: true,
+    },
+
+    tags: {
+      type: [String],
+      default: [],
+    },
+
+    draft: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: {
       createdAt: "publishedAt",
+      updatedAt: false,
     },
   }
 );
 
+// 🔍 Text index for search
 blogSchema.index({
   title: "text",
   des: "text",
