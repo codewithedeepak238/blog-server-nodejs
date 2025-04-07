@@ -25,12 +25,14 @@ export const createBlog = async (req: Request, res: Response) => {
             return
         }
 
+        const parsedtags = typeof req.body.tags === "string" ? JSON.parse(req.body.tags) : req.body.tags;
+
         const blog = await blogModel.create({
             blog_id,
             title,
             des,
             content: parsedContent,
-            tags,
+            tags: parsedtags,
             draft,
             banner, // ✅ Store image URL
         });
