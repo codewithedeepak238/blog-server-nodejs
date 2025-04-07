@@ -1,4 +1,4 @@
-import { createBlog, deleteBlog, updateBlog, uploadContentImage, getAllBlogs, getSingleBlog } from "../../controller/blog.controller";
+import { createBlog, deleteBlog, updateBlog, uploadContentImage, getAllBlogs, getSingleBlog, getDraftBlogs } from "../../controller/blog.controller";
 import { Router } from "express";
 import upload from "../../middleware/upload";
 
@@ -11,16 +11,19 @@ blogRouter.post("/create-blog", upload.single("banner"), createBlog);
 blogRouter.patch("/update-blog/:id", upload.single("banner"), updateBlog);
 
 //Delete Blog
-blogRouter.delete("/remove-blog/:id", upload.single("banner"), deleteBlog);
+blogRouter.delete("/remove-blog/:id", deleteBlog);
 
 //To upload images from the content
-blogRouter.post("/blogs", getAllBlogs);
+blogRouter.post("/editor-image", upload.single("image"), uploadContentImage);
 
 //Get All Blogs
-blogRouter.get("/blogs", upload.single("image"), getAllBlogs);
+blogRouter.get("/blogs", getAllBlogs);
 
 //Get Single Blog
-blogRouter.get("/blog/:id", upload.single("image"), getSingleBlog);
+blogRouter.get("/blog/:id", getSingleBlog);
+
+//Get Draft Blogs
+blogRouter.get("/blog/:id", getDraftBlogs);
 
 
 export default blogRouter;

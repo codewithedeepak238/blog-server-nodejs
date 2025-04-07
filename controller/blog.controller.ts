@@ -19,7 +19,7 @@ export const createBlog = async (req: Request, res: Response) => {
         const parsedContent = typeof content === "string" ? JSON.parse(content) : content;
         const blog_id = `${slugify(title)}-${Math.random().toString(36).substring(2, 6)}`;
 
-        const existing = await blogModel.findOne({ blog_id });
+        const existing = await blogModel.findOne({ blog_id, draft: false });
         if (existing) {
             res.status(409).json({ message: "A blog with this title already exists." });
             return
@@ -163,7 +163,9 @@ export const getAllBlogs = async (req: Request, res: Response) => {
         const skip = (page - 1) * limit;
         const search = (req.query.search as string)?.trim();
 
-        const query: any = {};
+        const query: any = {
+            draft: false //only show published draft
+        };
         let sort: any = { publishedAt: -1 };
 
         if (search) {
@@ -219,3 +221,25 @@ export const getSingleBlog = async (req: Request, res: Response) => {
     }
 }
 
+
+// Get all draft blogs
+export const getDraftBlogs = async (req: Request, res: Response) => {
+    try {
+        const allBlogs = await blogModel.find({draft:true});
+        if(!allBlogs){
+            res.status(400).json({ message: 'No blogs in draft.' });
+            return
+        }
+
+        res.status(200).json({
+            message: "Successfully fetched draft blogs.",
+            totalBlogs: allBlogs.length,
+            Blogs: allBlogs
+        })
+
+    }
+    catch (error: any) {
+        console.error("Error creating blog:", error);
+        res.status(500).json({ message: "Failed to update blog", error: error.message });
+    }
+}
