@@ -7,4 +7,8 @@ customerBlogRouter.get("/blogs", getAllBlogs);
 customerBlogRouter.get("/blog/:id", getSingleBlog);
 
 
+// Write Comment
+// customerBlogRouter.patch("/blog/:id", addComment);
+
+
 export default customerBlogRouter;
