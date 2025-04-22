@@ -58,3 +58,7 @@ AWS_BUCKET_NAME=your_bucket_name
 
 4. Run the app in development
 npm run dev
+
+---
+
+❤️ _Made with passion by [codewithedeepak238](https://github.com/codewithedeepak238)_
