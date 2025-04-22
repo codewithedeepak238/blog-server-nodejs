@@ -1,4 +1,4 @@
-# 🚀 Boomzo Blog Server
+# 🚀 Blog Server
 
 A full-featured blog backend API built using **TypeScript**, **Node.js**, **Express**, **MongoDB**, and **AWS S3** for image uploads.
 
@@ -20,7 +20,7 @@ A full-featured blog backend API built using **TypeScript**, **Node.js**, **Expr
 
 ## 📁 Project Structure
 
-Boomzo-Blog-Server/ ├── models/ ├── controllers/ ├── routes/ ├── middleware/ ├── utils/ ├── index.ts ├── app.ts ├── tsconfig.json ├── .env ├── README.md
+Blog-Server/ ├── models/ ├── controllers/ ├── routes/ ├── middleware/ ├── utils/ ├── index.ts ├── app.ts ├── tsconfig.json ├── .env ├── README.md
 
 ---
 
@@ -39,8 +39,8 @@ Boomzo-Blog-Server/ ├── models/ ├── controllers/ ├── routes/ �
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/yourusername/boomzo-blog-server.git
-cd boomzo-blog-server
+git clone https://github.com/yourusername/blog-server.git
+cd blog-server
 
 ---
 
